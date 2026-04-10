@@ -23,21 +23,18 @@ public class AdminController
     private AdminService adminService;
 
     @GetMapping("/")
-    public String index()
-    {
+    public String index(){
         return "Student Extracurricular Achievement Platform - Admin";
     }
 
     // -------------------- STUDENT MANAGEMENT --------------------
 
     @GetMapping("/viewallstudents")
-    public ResponseEntity<?> viewAllStudents()
-    {
-        try
-        {
+    public ResponseEntity<?> viewAllStudents(){
+        try{
             List<Student> students = adminService.viewAllStudents();
             if (students.size() > 0)
-                return ResponseEntity.status(HttpStatus.OK).body(students);
+                return ResponseEntity.ok().body(students);
             else
                 return ResponseEntity.noContent().build();
         }
