@@ -33,6 +33,13 @@ public class Achievement
 
     @Column(nullable = false, length = 20)
     private String status; // e.g. PENDING, APPROVED, REJECTED
+    
+    @Column(length = 20)
+    private String facultyStatus; // PENDING, RECOMMENDED, NOT_RECOMMENDED
+
+    @Column(length = 255)
+    private String facultyRemarks;
+
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)

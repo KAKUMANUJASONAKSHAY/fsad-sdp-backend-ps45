@@ -14,6 +14,10 @@ import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
 
+import com.klef.fsad.sdp.entity.Faculty;
+import com.klef.fsad.sdp.repository.FacultyRepository;
+
+
 @Service
 public class UserServiceImpl implements UserService
 {
@@ -22,6 +26,10 @@ public class UserServiceImpl implements UserService
 
     @Autowired
     private StudentRepository studentRepo;
+    
+    @Autowired
+    private FacultyRepository facultyRepo;
+
 
     @Override
     public UserDetails loadUserByUsername(String input) throws UsernameNotFoundException
@@ -49,6 +57,18 @@ public class UserServiceImpl implements UserService
                     List.of(new SimpleGrantedAuthority("STUDENT"))
             );
         }
+        
+        Optional<Faculty> facultyOpt = facultyRepo.findByEmail(input);
+        if (facultyOpt.isPresent())
+        {
+            Faculty faculty = facultyOpt.get();
+            return new org.springframework.security.core.userdetails.User(
+                    faculty.getEmail(),
+                    faculty.getPassword(),
+                    List.of(new SimpleGrantedAuthority("FACULTY"))
+            );
+        }
+
 
         throw new UsernameNotFoundException("User not found with input: " + input);
     }
@@ -61,7 +81,13 @@ public class UserServiceImpl implements UserService
 
         Optional<Student> studentOpt = studentRepo.findByEmail(input);
         if (studentOpt.isPresent()) return studentOpt.get();
+        
+        Optional<Faculty> facultyOpt = facultyRepo.findByEmail(input);
+        if (facultyOpt.isPresent()) return facultyOpt.get();
+
 
         return null;
     }
+    
+    
 }

@@ -30,4 +30,11 @@ public interface AchievementRepository extends JpaRepository<Achievement, Intege
 
     @Query("SELECT COUNT(a) FROM Achievement a WHERE a.category = ?1")
     long countByCategory(String category);
+    
+    @Query("SELECT a FROM Achievement a WHERE a.student.department = ?1")
+    List<Achievement> findByStudentDepartment(String department);
+
+    @Query("SELECT a FROM Achievement a WHERE a.student.department = ?1 AND a.status = ?2")
+    List<Achievement> findByStudentDepartmentAndStatus(String department, String status);
+
 }

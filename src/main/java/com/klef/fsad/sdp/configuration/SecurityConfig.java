@@ -44,15 +44,22 @@ public class SecurityConfig
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-ui.html",
-                    "/auth/**",
-                    "/studentapi/registration"
-                ).permitAll()
-                .requestMatchers("/adminapi/**").hasAuthority("ADMIN")
-                .requestMatchers("/studentapi/**").hasAuthority("STUDENT")
-                .anyRequest().authenticated()
+                	    "/swagger-ui/**",
+                	    "/v3/api-docs/**",
+                	    "/swagger-ui.html",
+                	    "/auth/**",
+                	    "/studentapi/registration",
+                	    "/facultyapi/registration",
+                	    "/mail/**",
+                	    "/otp/**",
+                	    "/files/**",
+                	    "/payment/**"
+                	).permitAll()
+                	.requestMatchers("/adminapi/**").hasAuthority("ADMIN")
+                	.requestMatchers("/studentapi/**").hasAuthority("STUDENT")
+                	.requestMatchers("/facultyapi/**").hasAuthority("FACULTY")
+                	.anyRequest().authenticated()
+
             )
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

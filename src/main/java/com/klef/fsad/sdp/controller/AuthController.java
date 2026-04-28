@@ -44,11 +44,12 @@ public class AuthController
             {
                 isValid = request.getPassword().equals(userDetails.getPassword());
             }
-            else if (role.equalsIgnoreCase("STUDENT"))
+            else if (role.equalsIgnoreCase("STUDENT") || role.equalsIgnoreCase("FACULTY"))
             {
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                 isValid = encoder.matches(request.getPassword(), userDetails.getPassword());
             }
+
             else
             {
                 return ResponseEntity.status(403).body("Invalid Role Type");
