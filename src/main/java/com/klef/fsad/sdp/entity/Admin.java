@@ -15,7 +15,7 @@ public class Admin
     @Column(length = 50)
     private String username;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
 
     

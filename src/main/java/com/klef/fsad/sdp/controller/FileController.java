@@ -14,7 +14,6 @@ import com.klef.fsad.sdp.repository.AchievementRepository;
 
 @RestController
 @RequestMapping("/files")
-@CrossOrigin("*")
 public class FileController
 {
     @Autowired

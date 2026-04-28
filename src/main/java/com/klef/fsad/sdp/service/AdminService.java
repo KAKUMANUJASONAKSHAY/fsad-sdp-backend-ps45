@@ -6,6 +6,7 @@ import java.util.Map;
 import com.klef.fsad.sdp.dto.AchievementDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Achievement;
+import com.klef.fsad.sdp.entity.Faculty;
 import com.klef.fsad.sdp.entity.Student;
 
 public interface AdminService
@@ -15,6 +16,11 @@ public interface AdminService
     public String deleteStudent(int id);
     public StudentDTO studentToStudentDTO(Student s);
     public List<StudentDTO> displayAllStudentsDTO();
+
+    // Faculty Management
+    public String addFaculty(Faculty faculty);
+    public List<Faculty> viewAllFaculty();
+    public String deleteFaculty(int id);
 
     // Achievement Management
     public String addAchievement(Achievement achievement);

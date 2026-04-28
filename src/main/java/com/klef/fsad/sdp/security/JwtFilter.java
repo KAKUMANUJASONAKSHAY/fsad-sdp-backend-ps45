@@ -39,7 +39,11 @@ public class JwtFilter extends OncePerRequestFilter
                 "/swagger-ui",
                 "/v3/api-docs",
                 "/swagger-ui.html",
-                "/studentapi/registration"
+                "/studentapi/registration",
+                "/mail",
+                "/otp",
+                "/files",
+                "/payment"
         );
 
         boolean isPublic = publicPaths.stream().anyMatch(path::startsWith);
@@ -51,7 +55,6 @@ public class JwtFilter extends OncePerRequestFilter
         }
 
         String header = request.getHeader("Authorization");
-        System.out.println("Token Header=" + header);
 
         if (header == null || !header.startsWith("Bearer "))
         {

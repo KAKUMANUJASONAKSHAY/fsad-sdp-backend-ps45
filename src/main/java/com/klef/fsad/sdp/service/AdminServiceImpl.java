@@ -6,14 +6,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.klef.fsad.sdp.dto.AchievementDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Achievement;
+import com.klef.fsad.sdp.entity.Faculty;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.repository.AchievementRepository;
+import com.klef.fsad.sdp.repository.FacultyRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
 
 @Service
@@ -24,6 +27,12 @@ public class AdminServiceImpl implements AdminService
 
     @Autowired
     private AchievementRepository achievementRepository;
+
+    @Autowired
+    private FacultyRepository facultyRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Student> viewAllStudents()
@@ -65,6 +74,34 @@ public class AdminServiceImpl implements AdminService
         return students.stream()
                 .map(this::studentToStudentDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String addFaculty(Faculty faculty)
+    {
+        if (faculty.getPassword() != null && !faculty.getPassword().isEmpty())
+        {
+            faculty.setPassword(passwordEncoder.encode(faculty.getPassword()));
+        }
+
+        facultyRepository.save(faculty);
+        return "Faculty Added Successfully";
+    }
+
+    @Override
+    public List<Faculty> viewAllFaculty()
+    {
+        return facultyRepository.findAll();
+    }
+
+    @Override
+    public String deleteFaculty(int id)
+    {
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Faculty Not Found"));
+
+        facultyRepository.delete(faculty);
+        return "Faculty Deleted Successfully";
     }
 
     @Override

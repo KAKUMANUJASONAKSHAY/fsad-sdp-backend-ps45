@@ -22,6 +22,9 @@ public interface AchievementRepository extends JpaRepository<Achievement, Intege
     @Query("SELECT a FROM Achievement a WHERE a.student.id = ?1 AND a.status = ?2")
     List<Achievement> findByStudentIdAndStatus(int studentId, String status);
 
+    @Query("SELECT a FROM Achievement a WHERE a.student.id = ?1 AND a.category = ?2")
+    List<Achievement> findByStudentIdAndCategory(int studentId, String category);
+
     @Query("SELECT COUNT(a) FROM Achievement a WHERE a.status = ?1")
     long countByStatus(String status);
 

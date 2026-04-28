@@ -16,8 +16,11 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil
 {
-    @Value("${jwt.secret:MySuperStrongSecretKeyForJWT2026KlefFSDVijayawada@1234567890ABCDEF}")
+    @Value("${jwt.secret}")
     private String SECRET;
+
+    @Value("${jwt.expiration-ms:600000}")
+    private long expirationMs;
 
     public String generateToken(UserDetails userDetails)
     {
@@ -28,7 +31,7 @@ public class JwtUtil
                 .setSubject(userDetails.getUsername())
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .setId(UUID.randomUUID().toString())
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();

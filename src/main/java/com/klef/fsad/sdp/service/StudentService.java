@@ -11,5 +11,5 @@ public interface StudentService
     public String updateStudentProfile(Student student);
     public List<Achievement> viewMyAchievements(int studentId);
     public List<Achievement> viewMyAchievementsByCategory(int studentId, String category);
-    public String submitAchievement(Achievement achievement);
+    public Achievement submitAchievement(Achievement achievement);
 }

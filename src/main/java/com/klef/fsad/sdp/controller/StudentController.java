@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.klef.fsad.sdp.entity.Achievement;
 import com.klef.fsad.sdp.entity.Student;
+import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.service.StudentService;
 
 @RestController
 @RequestMapping("studentapi")
-@CrossOrigin("*")
 public class StudentController
 {
     @Autowired
@@ -46,6 +46,10 @@ public class StudentController
             String output = studentService.updateStudentProfile(student);
             return ResponseEntity.status(200).body(output);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body("Internal Server Error");
@@ -65,6 +69,10 @@ public class StudentController
             }
 
             return ResponseEntity.ok(achievements);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         catch (Exception e)
         {
@@ -86,6 +94,10 @@ public class StudentController
 
             return ResponseEntity.ok(achievements);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body("Error Fetching Achievements");
@@ -93,16 +105,16 @@ public class StudentController
     }
 
     @PostMapping("/submitachievement")
-    public ResponseEntity<String> submitAchievement(@RequestBody Achievement achievement)
+    public ResponseEntity<Achievement> submitAchievement(@RequestBody Achievement achievement)
     {
         try
         {
-            String output = studentService.submitAchievement(achievement);
+            Achievement output = studentService.submitAchievement(achievement);
             return ResponseEntity.status(201).body(output);
         }
         catch (Exception e)
         {
-            return ResponseEntity.status(500).body("Error Submitting Achievement");
+            return ResponseEntity.status(500).build();
         }
     }
 }

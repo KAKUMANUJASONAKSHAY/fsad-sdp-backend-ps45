@@ -13,7 +13,6 @@ import jakarta.mail.internet.MimeMessage;
 
 @RestController
 @RequestMapping("/mail")
-@CrossOrigin("*")
 public class MailController
 {
     @Autowired

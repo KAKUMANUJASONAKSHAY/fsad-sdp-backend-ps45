@@ -7,13 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.klef.fsad.sdp.entity.Achievement;
-import com.klef.fsad.sdp.entity.Faculty;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.service.FacultyService;
 
 @RestController
 @RequestMapping("facultyapi")
-@CrossOrigin("*")
 public class FacultyController
 {
     @Autowired
@@ -23,20 +21,6 @@ public class FacultyController
     public String index()
     {
         return "Faculty Controller - Achievement Review";
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity<String> facultyRegistration(@RequestBody Faculty faculty)
-    {
-        try
-        {
-            String output = facultyService.facultyRegistration(faculty);
-            return ResponseEntity.status(201).body(output);
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.status(500).body("Faculty Registration Failed");
-        }
     }
 
     @GetMapping("/viewdepartmentstudents")

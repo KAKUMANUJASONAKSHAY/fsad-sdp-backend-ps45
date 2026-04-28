@@ -3,6 +3,7 @@ package com.klef.fsad.sdp.configuration;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,27 +35,31 @@ public class SecurityConfig
     @Autowired
     private UserService userService;
 
+    @Value("${app.cors.allowed-origin:http://localhost:3038}")
+    private String allowedOrigin;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
+        String[] publicEndpoints = {
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-ui.html",
+                "/auth/**",
+                "/studentapi/registration",
+                "/mail/**",
+                "/otp/**",
+                "/files/**",
+                "/payment/**"
+        };
+
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authenticationProvider(authenticationProvider())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(
-                	    "/swagger-ui/**",
-                	    "/v3/api-docs/**",
-                	    "/swagger-ui.html",
-                	    "/auth/**",
-                	    "/studentapi/registration",
-                	    "/facultyapi/registration",
-                	    "/mail/**",
-                	    "/otp/**",
-                	    "/files/**",
-                	    "/payment/**"
-                	).permitAll()
+                .requestMatchers(publicEndpoints).permitAll()
                 	.requestMatchers("/adminapi/**").hasAuthority("ADMIN")
                 	.requestMatchers("/studentapi/**").hasAuthority("STUDENT")
                 	.requestMatchers("/facultyapi/**").hasAuthority("FACULTY")
@@ -94,8 +99,7 @@ public class SecurityConfig
     {
         CorsConfiguration config = new CorsConfiguration();
 
-        
-        config.setAllowedOrigins(List.of("http://localhost:3038")); // frontend url
+        config.setAllowedOrigins(List.of(allowedOrigin));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));

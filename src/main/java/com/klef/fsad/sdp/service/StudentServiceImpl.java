@@ -79,14 +79,16 @@ public class StudentServiceImpl implements StudentService
     @Override
     public List<Achievement> viewMyAchievementsByCategory(int studentId, String category)
     {
-        return achievementRepository.findByStudentIdAndStatus(studentId, category);
+        studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found"));
+
+        return achievementRepository.findByStudentIdAndCategory(studentId, category);
     }
 
     @Override
-    public String submitAchievement(Achievement achievement)
+    public Achievement submitAchievement(Achievement achievement)
     {
         achievement.setStatus("PENDING");
-        achievementRepository.save(achievement);
-        return "Achievement Submitted Successfully. Waiting for Admin Approval.";
+        return achievementRepository.save(achievement);
     }
 }

@@ -8,7 +8,6 @@ public class SdpBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SdpBackendApplication.class, args);
-		System.out.println("SpringBoot project");
 	}
 
 }

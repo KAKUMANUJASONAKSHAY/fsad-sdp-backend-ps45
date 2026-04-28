@@ -17,7 +17,6 @@ import com.razorpay.Utils;
 
 @RestController
 @RequestMapping("/payment")
-@CrossOrigin("*")
 public class PaymentController
 {
 	@Value("${razorpay.key.id}")
@@ -35,6 +34,11 @@ public class PaymentController
     {
         try
         {
+            if (keyId == null || keyId.isBlank() || keySecret == null || keySecret.isBlank())
+            {
+                return ResponseEntity.status(500).body("Razorpay credentials are not configured");
+            }
+
             RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
 
             JSONObject orderRequest = new JSONObject();

@@ -4,19 +4,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.klef.fsad.sdp.dto.AchievementDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Achievement;
+import com.klef.fsad.sdp.entity.Faculty;
 import com.klef.fsad.sdp.entity.Student;
+import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.service.AdminService;
 
 @RestController
 @RequestMapping("adminapi")
-@CrossOrigin("*")
 public class AdminController
 {
     @Autowired
@@ -33,10 +40,14 @@ public class AdminController
     public ResponseEntity<?> viewAllStudents(){
         try{
             List<Student> students = adminService.viewAllStudents();
-            if (students.size() > 0)
+            if (!students.isEmpty())
                 return ResponseEntity.ok().body(students);
             else
                 return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         catch (Exception e)
         {
@@ -52,6 +63,10 @@ public class AdminController
             List<StudentDTO> students = adminService.displayAllStudentsDTO();
             return ResponseEntity.ok(students);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body("Error Fetching Students");
@@ -66,9 +81,67 @@ public class AdminController
             String output = adminService.deleteStudent(id);
             return ResponseEntity.status(200).body(output);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    // -------------------- FACULTY MANAGEMENT --------------------
+
+    @PostMapping("/addfaculty")
+    public ResponseEntity<String> addFaculty(@RequestBody Faculty faculty)
+    {
+        try
+        {
+            String output = adminService.addFaculty(faculty);
+            return ResponseEntity.status(201).body(output);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(500).body("Error Adding Faculty");
+        }
+    }
+
+    @GetMapping("/viewallfaculty")
+    public ResponseEntity<?> viewAllFaculty()
+    {
+        try
+        {
+            List<Faculty> facultyList = adminService.viewAllFaculty();
+
+            if (!facultyList.isEmpty())
+            {
+                return ResponseEntity.ok(facultyList);
+            }
+
+            return ResponseEntity.noContent().build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(500).body("Error Fetching Faculty");
+        }
+    }
+
+    @DeleteMapping("/deletefaculty/{id}")
+    public ResponseEntity<String> deleteFaculty(@PathVariable int id)
+    {
+        try
+        {
+            String output = adminService.deleteFaculty(id);
+            return ResponseEntity.ok(output);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
@@ -96,6 +169,10 @@ public class AdminController
             String output = adminService.updateAchievementStatus(id, status);
             return ResponseEntity.status(200).body(output);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body("Internal Server Error");
@@ -110,6 +187,10 @@ public class AdminController
             String output = adminService.deleteAchievement(id);
             return ResponseEntity.ok(output);
         }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
         catch (Exception e)
         {
             return ResponseEntity.status(500).body(e.getMessage());
@@ -122,10 +203,14 @@ public class AdminController
         try
         {
             List<Achievement> achievements = adminService.viewAllAchievements();
-            if (achievements.size() > 0)
+            if (!achievements.isEmpty())
                 return ResponseEntity.ok(achievements);
             else
                 return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         catch (Exception e)
         {
@@ -139,7 +224,7 @@ public class AdminController
         try
         {
             List<Achievement> achievements = adminService.viewAchievementsByStatus(status);
-            if (achievements.size() > 0)
+            if (!achievements.isEmpty())
                 return ResponseEntity.ok(achievements);
             else
                 return ResponseEntity.noContent().build();
@@ -157,6 +242,10 @@ public class AdminController
         {
             List<AchievementDTO> achievements = adminService.displayAllAchievementsDTO();
             return ResponseEntity.ok(achievements);
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         catch (Exception e)
         {

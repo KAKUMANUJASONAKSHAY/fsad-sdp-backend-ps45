@@ -3,39 +3,22 @@ package com.klef.fsad.sdp.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.klef.fsad.sdp.entity.Achievement;
-import com.klef.fsad.sdp.entity.Faculty;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.repository.AchievementRepository;
-import com.klef.fsad.sdp.repository.FacultyRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
 
 @Service
 public class FacultyServiceImpl implements FacultyService
 {
     @Autowired
-    private FacultyRepository facultyRepository;
-
-    @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
     private AchievementRepository achievementRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public String facultyRegistration(Faculty faculty)
-    {
-        faculty.setPassword(passwordEncoder.encode(faculty.getPassword()));
-        facultyRepository.save(faculty);
-        return "Faculty Registered Successfully";
-    }
 
     @Override
     public List<Student> viewDepartmentStudents(String department)
