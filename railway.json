@@ -1,15 +1,34 @@
 {
   "$schema": "https://railway.app/schema/railway.json",
   "build": {
-    "builder": "dockerfile"
+    "builder": "dockerfile",
+    "dockerfilePath": "./Dockerfile"
   },
   "deploy": {
     "numReplicas": 1,
     "startCommand": "java -jar target/SpringBootSDPBackendProject-0.0.1-SNAPSHOT.jar",
     "restartPolicyMaxRetries": 5,
-    "restartPolicyWindowSeconds": 60
+    "restartPolicyWindowSeconds": 60,
+    "healthchecks": {
+      "liveness": {
+        "initialDelaySeconds": 30,
+        "periodSeconds": 10
+      }
+    }
   },
   "env": {
-    "PORT": "8080"
+    "PORT": "8080",
+    "DB_URL": "jdbc:mysql://YOUR_DB_HOST:YOUR_DB_PORT/YOUR_DB_NAME",
+    "DB_USERNAME": "YOUR_DB_USERNAME",
+    "DB_PASSWORD": "YOUR_DB_PASSWORD",
+    "MAIL_USERNAME": "your_email@gmail.com",
+    "MAIL_PASSWORD": "your_gmail_app_password",
+    "JWT_SECRET": "your_32_character_secret_key_minimum_length_required",
+    "JWT_EXPIRATION_MS": "600000",
+    "CORS_ALLOWED_ORIGIN": "https://your-frontend-domain.vercel.app",
+    "RAZORPAY_KEY_ID": "your_razorpay_key_id",
+    "RAZORPAY_KEY_SECRET": "your_razorpay_key_secret",
+    "JPA_DDL_AUTO": "update",
+    "JPA_SHOW_SQL": "false"
   }
 }
