@@ -1,0 +1,17 @@
+.git
+.github
+.idea
+.settings
+.vscode
+target
+build
+*.iml
+*.iws
+*.ipr
+.classpath
+.factorypath
+.project
+HELP.md
+RAILWAY_DEPLOYMENT.md
+deploy-railway.ps1
+setup-railway.sh
