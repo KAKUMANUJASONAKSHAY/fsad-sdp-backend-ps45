@@ -24,7 +24,7 @@ services:
       - key: JWT_EXPIRATION_MS
         value: 600000
       - key: CORS_ALLOWED_ORIGIN
-        value: https://frontendsdp.onrender.com
+        value: https://frontendsdp-r6jt.onrender.com
       - key: RAZORPAY_KEY_ID
         sync: false
       - key: RAZORPAY_KEY_SECRET
